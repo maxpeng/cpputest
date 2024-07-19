@@ -81,14 +81,18 @@ target_compile_definitions(CppUTest
         $<$<BOOL:${HAVE_STRUCT_TIMESPEC}>:_TIMESPEC_DEFINED>
 )
 
+if(NOT CPPUTEST_THREAD_LIB_DETECTION_DISABLED)
+set(CMAKE_FIND_DEBUG_MODE TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads)
+set(CMAKE_FIND_DEBUG_MODE FALSE)
 
 target_link_libraries(CppUTest
     PRIVATE
         $<$<BOOL:${WIN32}>:winmm>
         $<$<BOOL:${CMAKE_USE_PTHREADS_INIT}>:${CMAKE_THREAD_LIBS_INIT}>
 )
+endif()
 
 add_library(CppUTest::CppUTest ALIAS CppUTest)
 
